@@ -3,12 +3,11 @@ import cv2
 from google.cloud import texttospeech_v1
 from google.cloud import aiplatform
 from google.cloud.aiplatform.gapic.schema import predict
-from pydub import AudioSegment
-from pydub.playback import play
 from io import BytesIO
 import base64
 import time
 import numpy as np
+import pygame
 
 # Function for object detection and drawing bounding boxes
 def predict_image_object_detection_sample(
@@ -125,8 +124,11 @@ def process_frames():
                         response = client.synthesize_speech(
                             input=input_text, voice=voice, audio_config=audio_config
                         )
-                        audio = AudioSegment.from_file(BytesIO(response.audio_content), format="mp3")
-                        play(audio)
+                        # Initialize a Sound object from the audio content using pygame
+                        pygame.mixer.init()
+                        pygame.mixer.music.load(BytesIO(response.audio_content))
+                        # Play the audio
+                        pygame.mixer.music.play()
             st.image(frame, caption='Camera Feed', use_column_width=True)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
