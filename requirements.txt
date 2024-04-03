@@ -3,4 +3,4 @@ google-cloud-texttospeech
 google-cloud-aiplatform
 numpy
 opencv-python-headless
-pydub
+pygame
